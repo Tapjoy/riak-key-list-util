@@ -66,6 +66,9 @@ log_all_keys_for_bucket(OutputDir, Bucket) ->
 log_all_keys_for_vnode(OutputDir, Vnode) ->
 	process_cluster_parallel_for_vnode(OutputDir, [log_keys], Vnode).
 
+log_all_keys_for_bucket_and_vnode(OutputDir, Bucket, Vnode) ->
+	process_cluster_parallel_for_vnode(OutputDir, [log_keys, {bucket, Bucket}], Vnode).
+
 % SleepPeriod - optional amount of time to sleep between each key operation,
 % in milliseconds
 log_all_keys(OutputDir, SleepPeriod) ->
