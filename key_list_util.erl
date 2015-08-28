@@ -69,6 +69,9 @@ log_all_keys_for_vnode(OutputDir, Vnode) ->
 log_all_keys_for_bucket_and_vnode(OutputDir, Bucket, Vnode) ->
 	process_cluster_parallel_for_vnode(OutputDir, [log_keys, {bucket, Bucket}], Vnode).
 
+log_all_keys_for_vnode_with_defaults(Vnode) ->
+	process_cluster_parallel_for_vnode("/riak/idi_keys/", [log_keys, {bucket, <<"idi">>}], Vnode).
+
 % SleepPeriod - optional amount of time to sleep between each key operation,
 % in milliseconds
 log_all_keys(OutputDir, SleepPeriod) ->
