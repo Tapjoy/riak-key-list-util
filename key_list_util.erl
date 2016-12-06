@@ -70,7 +70,7 @@ log_all_keys_for_bucket_and_vnode(OutputDir, Bucket, Vnode) ->
 	process_cluster_parallel_for_vnode(OutputDir, [log_keys, {bucket, Bucket}], Vnode).
 
 log_all_keys_for_vnode_with_defaults(Vnode) ->
-	process_cluster_parallel_for_vnode("/riak/stats_keys/", [log_keys, {bucket, <<"stats">>}], Vnode).
+	process_cluster_parallel_for_vnode("/ebs/point_purchases_keys/", [log_keys, {bucket, <<"point_purchases">>}], Vnode).
 
 % SleepPeriod - optional amount of time to sleep between each key operation,
 % in milliseconds
@@ -99,14 +99,14 @@ local_direct_delete(Index, Bucket, Key) when
 	DeleteReq = {riak_kv_delete_req_v1, {Bucket, Key}, make_ref()},
 	riak_core_vnode_master:sync_command({Index, node()}, DeleteReq, riak_kv_vnode_master).
 
-get_preflist_for_key(Bucket, Key, NValue) when 
+get_preflist_for_key(Bucket, Key, NValue) when
 	is_binary(Bucket),
 	is_binary(Key),
 	is_integer(NValue) ->
 	BKey = {Bucket,Key},
 	{ok, Ring} = riak_core_ring_manager:get_my_ring(),
 	DocIdx = riak_core_util:chash_key(BKey),
-	% BucketProps = riak_core_bucket:get_bucket(Bucket, Ring), 
+	% BucketProps = riak_core_bucket:get_bucket(Bucket, Ring),
 	% [NValue] = [Y || {X1, Y} <- BucketProps, n_val == X1],
 	UpNodes = riak_core_node_watcher:nodes(riak_kv),
 	Preflist = riak_core_apl:get_apl_ann(DocIdx, NValue, Ring, UpNodes),
@@ -353,7 +353,7 @@ process_vnode(Vnode, OutputDir, Options) ->
 	write_vnode_totals(CountsFilename, Results).
 
 match_vnode(Vnode, VnodeArg, OutputDir, Options) ->
-	% 
+	%
 	%io:format("Comparing ~p~n", [VnodeArg]),
 	%io:format("With ~p~n", [Vnode]),
 	case is_element_of_tuple(Vnode, VnodeArg) of
@@ -372,7 +372,7 @@ process_vnode_on_node(OutputDir, Options, VnodeArg) ->
 	LocalVnodes = [IdxOwner || IdxOwner={_, Owner} <- Owners, Owner =:= node()],
 	lists:foreach(fun(Vnode) -> match_vnode(Vnode, VnodeArg, OutputDir, Options) end, LocalVnodes).
 
-	
+
 
 is_element_of_tuple(Tuple, Element) ->
     lists:member(Element, tuple_to_list(Tuple)).
