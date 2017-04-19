@@ -70,7 +70,7 @@ log_all_keys_for_bucket_and_vnode(OutputDir, Bucket, Vnode) ->
 	process_cluster_parallel_for_vnode(OutputDir, [log_keys, {bucket, Bucket}], Vnode).
 
 log_all_keys_for_vnode_with_defaults(Vnode) ->
-	process_cluster_parallel_for_vnode("/ebs/point_purchases_keys/", [log_keys, {bucket, <<"point_purchases">>}], Vnode).
+	process_cluster_parallel_for_vnode("/mnt/point_purchases_v2_keys/", [log_keys, {bucket, <<"point_purchases_v2">>}], Vnode).
 
 % SleepPeriod - optional amount of time to sleep between each key operation,
 % in milliseconds
